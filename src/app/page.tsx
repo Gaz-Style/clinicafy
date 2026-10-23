@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -306,11 +306,11 @@ export default function ClinicafyWorkstation() {
               width: '44px',
               height: '44px',
               borderRadius: '12px',
-              background: 'linear-gradient(135deg, #0284c7 0%, #6366f1 100%)',
+              background: '#0f172a',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 0 18px rgba(56, 189, 248, 0.4)',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.08)',
             }}
           >
             <Brain size={26} color="#ffffff" />
@@ -335,7 +335,7 @@ export default function ClinicafyWorkstation() {
               value={selectedTenant}
               onChange={e => setSelectedTenant(e.target.value)}
               style={{
-                background: 'rgba(15, 23, 42, 0.8)',
+                background: '#ffffff',
                 fontSize: '0.82rem',
                 padding: '0.4rem 0.8rem',
                 border: '1px solid var(--border-accent)',
@@ -354,12 +354,12 @@ export default function ClinicafyWorkstation() {
               gap: '0.5rem',
               padding: '0.4rem 0.8rem',
               borderRadius: '8px',
-              background: 'rgba(16, 185, 129, 0.08)',
-              border: '1px solid rgba(16, 185, 129, 0.25)',
+              background: '#ecfdf5',
+              border: '1px solid #a7f3d0',
             }}
           >
             <div className="pulse-dot" />
-            <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#34d399' }}>Zero Trust MFA & RLS Activo</span>
+            <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#059669' }}>Zero Trust MFA & RLS Activo</span>
           </div>
 
           {/* Clinician Pill */}
@@ -373,7 +373,7 @@ export default function ClinicafyWorkstation() {
                 width: '36px',
                 height: '36px',
                 borderRadius: '50%',
-                background: 'rgba(56, 189, 248, 0.2)',
+                background: '#f0f9ff',
                 border: '1px solid var(--brand-blue)',
                 display: 'flex',
                 alignItems: 'center',
@@ -582,7 +582,7 @@ export default function ClinicafyWorkstation() {
                   borderRadius: '8px',
                   marginBottom: '1rem',
                   fontSize: '0.82rem',
-                  color: '#34d399',
+                  color: '#059669',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '0.5rem',
@@ -645,7 +645,7 @@ export default function ClinicafyWorkstation() {
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: '#34d399', marginBottom: '0.4rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: '#059669', marginBottom: '0.4rem' }}>
                     P — PLAN (Farmacoterapia, Receta FEA, Psicoterapia & Próximo Control)
                   </label>
                   <textarea
@@ -694,7 +694,7 @@ export default function ClinicafyWorkstation() {
                   />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: '#34d399', marginBottom: '0.4rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: '#059669', marginBottom: '0.4rem' }}>
                     P — PLAN (Intervención, Tareas Inter-sesión & Alianza de Trabajo)
                   </label>
                   <textarea
@@ -775,7 +775,7 @@ export default function ClinicafyWorkstation() {
                       style={{
                         padding: '0.6rem 0.8rem',
                         borderRadius: '8px',
-                        background: isSelected ? 'rgba(6, 182, 212, 0.15)' : 'rgba(15, 23, 42, 0.5)',
+                        background: isSelected ? '#f0f9ff' : 'rgba(15, 23, 42, 0.5)',
                         border: isSelected ? '1px solid var(--brand-teal)' : '1px solid var(--border-subtle)',
                         cursor: 'pointer',
                         transition: 'all 0.2s ease',
@@ -830,7 +830,7 @@ export default function ClinicafyWorkstation() {
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.3rem' }}>
                 <Lock size={14} color="#10b981" />
-                <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#34d399' }}>
+                <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#059669' }}>
                   Cumplimiento Zero-Audio
                 </span>
               </div>
@@ -875,7 +875,7 @@ export default function ClinicafyWorkstation() {
                 display: 'grid',
                 gridTemplateColumns: '1fr 1fr',
                 gap: '1rem',
-                background: 'rgba(15, 23, 42, 0.4)',
+                background: '#f8fafc',
                 padding: '1rem',
                 borderRadius: '8px',
                 marginBottom: '1.25rem',
@@ -931,7 +931,7 @@ export default function ClinicafyWorkstation() {
               style={{
                 padding: '1rem',
                 borderRadius: '8px',
-                background: 'rgba(16, 185, 129, 0.08)',
+                background: '#ecfdf5',
                 border: '1px solid rgba(16, 185, 129, 0.3)',
                 display: 'flex',
                 alignItems: 'center',
@@ -941,7 +941,7 @@ export default function ClinicafyWorkstation() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                 <Fingerprint size={28} color="#10b981" />
                 <div>
-                  <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#34d399' }}>
+                  <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#059669' }}>
                     Firma Electrónica Avanzada (FEA) Verificada
                   </div>
                   <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
@@ -991,7 +991,7 @@ export default function ClinicafyWorkstation() {
                 style={{
                   padding: '0.6rem 0.8rem',
                   borderRadius: '6px',
-                  background: 'rgba(15, 23, 42, 0.8)',
+                  background: '#ffffff',
                   fontSize: '0.75rem',
                   marginBottom: '1rem',
                   textAlign: 'left',
@@ -1092,8 +1092,8 @@ export default function ClinicafyWorkstation() {
                 style={{
                   padding: '1.25rem',
                   borderRadius: '10px',
-                  background: 'rgba(56, 189, 248, 0.08)',
-                  border: '1px solid rgba(56, 189, 248, 0.3)',
+                  background: '#f0f9ff',
+                  border: '1px solid #bae6fd',
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
@@ -1104,7 +1104,7 @@ export default function ClinicafyWorkstation() {
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', fontSize: '0.85rem' }}>
                   <div className="glass-card">
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Aporte Isapre / Fonasa:</div>
-                    <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#34d399' }}>
+                    <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#059669' }}>
                       ${bonoResult.insuranceContribution.toLocaleString('es-CL')} CLP
                     </div>
                   </div>
@@ -1211,7 +1211,7 @@ export default function ClinicafyWorkstation() {
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               <div className="pulse-dot" />
-              <span style={{ fontSize: '0.8rem', color: '#34d399', fontWeight: 600 }}>Broker EMQX TLS Conectado (14ms)</span>
+              <span style={{ fontSize: '0.8rem', color: '#059669', fontWeight: 600 }}>Broker EMQX TLS Conectado (14ms)</span>
               <button
                 className="btn btn-secondary"
                 style={{ fontSize: '0.75rem', padding: '0.4rem 0.8rem' }}
@@ -1242,7 +1242,7 @@ export default function ClinicafyWorkstation() {
 
             <div className="glass-card" style={{ textAlign: 'center', padding: '1.5rem 1rem' }}>
               <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.4rem' }}>PRESIÓN ARTERIAL</div>
-              <div style={{ fontSize: '2.5rem', fontWeight: 800, color: '#34d399' }}>
+              <div style={{ fontSize: '2.5rem', fontWeight: 800, color: '#059669' }}>
                 {biometrics.bloodPressureSystolic}/{biometrics.bloodPressureDiastolic}
               </div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>mmHg (Normotensa)</div>
@@ -1261,7 +1261,7 @@ export default function ClinicafyWorkstation() {
             style={{
               padding: '1rem',
               borderRadius: '8px',
-              background: 'rgba(15, 23, 42, 0.6)',
+              background: '#f8fafc',
               border: '1px solid var(--border-subtle)',
               display: 'flex',
               justifyContent: 'space-between',
@@ -1357,7 +1357,7 @@ export default function ClinicafyWorkstation() {
                 style={{
                   height: '140px',
                   overflowY: 'auto',
-                  background: 'rgba(15, 23, 42, 0.8)',
+                  background: '#ffffff',
                   padding: '0.75rem',
                   borderRadius: '6px',
                   fontSize: '0.75rem',
@@ -1441,7 +1441,7 @@ export default function ClinicafyWorkstation() {
                   }}
                 >
                   <CheckCircle2 size={32} color="#10b981" style={{ margin: '0 auto 0.5rem' }} />
-                  <div style={{ fontWeight: 700, color: '#34d399', fontSize: '0.95rem' }}>
+                  <div style={{ fontWeight: 700, color: '#059669', fontSize: '0.95rem' }}>
                     ¡Reserva Confirmada y Pagada Exitosamente!
                   </div>
                   <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', marginTop: '0.3rem' }}>
