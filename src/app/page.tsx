@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -36,6 +36,69 @@ import { IoTGateway } from '@/services/iot-gateway';
 import { AuditService } from '@/services/audit-service';
 import { AutomationEngine } from '@/services/automation-service';
 
+const INITIAL_BIOMETRICS: BiometricTelemetry = {
+  timestamp: '2026-10-23T12:00:00.000Z',
+  deviceId: 'BOX-IOT-BIOMONITOR-01',
+  heartRateBpm: 74,
+  hrvMs: 55,
+  spo2Percent: 98,
+  bloodPressureSystolic: 120,
+  bloodPressureDiastolic: 78,
+  stressLevel: 'low',
+};
+
+const INITIAL_SCRIBE_DATA = {
+  soap: {
+    subjective: `Paciente refiere cuadro de 4 semanas de evolución caracterizado por anhedonia persistente, fatiga psicofísica y dificultades para conciliar el sueño (latencia > 90 min). Menciona estresor laboral agudo en el último mes. Niega ideación suicida activa o síntomas psicóticos. Refiere antecedentes de tratamiento discontinuado con Sertralina en 2024.`,
+    objective: `Paciente vigil, lúcido, orientado témporo-espacialmente. Afecto de resonancia disminuida, hipotímico con labilidad emocional moderada al relatar situación laboral. Pensamiento coherente, flujo normal sin bloqueos. No se aprecian alteraciones sensoperceptivas. Juicio de realidad conservado. Normotenso (120/75 mmHg), FC: 74 lpm regular.`,
+    assessment: `Cuadro clínico compatible con Episodio Depresivo Moderado (CIE-10 F32.1) reactivo a sobrecarga laboral, con comorbilidad de Ansiedad Generalizada e Insomnio de conciliación secundario.`,
+    plan: `1. Reanudación de farmacoterapia: Sertralina 50 mg/día vo matinal los primeros 7 días, titular a 100 mg/día según tolerancia.\n2. Coadyuvante de conciliación: Clonazepam 0.5 mg 1 comp vo noche por 14 días (retirada gradual programada).\n3. Indicación de Psicoterapia Cognitivo-Conductual (1 sesión semanal).\n4. Higiene del sueño estricta y control en 3 semanas con exámenes de laboratorio (Perfil tiroideo TSH/T4L, Hemograma, Vit D).`,
+  },
+  dap: {
+    data: `Motivo de consulta: Angustia y sobrecarga. Discurso fluido pero cargado afectivamente. Manifiesta sintomatología ansioso-depresiva vinculada a dinámicas de autoexigencia y conflicto de rol laboral. Insomnio persistente y aislamiento social leve.`,
+    assessment: `Se observa reactivación de esquema cognitivo de vulnerabilidad e insuficiencia personal. Recursos de afrontamiento momentáneamente desbordados. Excelente alianza terapéutica y motivación intrínseca al cambio.`,
+    plan: `Trabajo focal en reestructuración de pensamientos automáticos catastrofistas, prescripción de tareas conductuales de autocuidado y registro diario de pensamientos disfóricos. Derivación a evaluación psiquiátrica complementaria coordinada.`,
+  },
+  suggestedDiagnoses: [
+    {
+      code: 'F32.1',
+      system: 'ICD-10' as const,
+      display: 'Episodio depresivo moderado sin síntomas psicóticos',
+      primary: true,
+      confidence: 0.96,
+    },
+    {
+      code: 'F41.1',
+      system: 'ICD-10' as const,
+      display: 'Trastorno de ansiedad generalizada (TAG)',
+      primary: false,
+      confidence: 0.88,
+    },
+    {
+      code: 'F51.01',
+      system: 'ICD-10' as const,
+      display: 'Insomnio no orgánico',
+      primary: false,
+      confidence: 0.82,
+    },
+  ],
+  metadata: {
+    scribeUsed: true,
+    audioStreamDurationSec: 42,
+    audioDestroyedAt: '2026-10-23T12:00:00.000Z',
+    confidenceScore: 0.94,
+    speechEngine: 'Whisper-Large-v3-Turbo + DeepSeek/Gemini Medical Clinical Scribe',
+    entitiesExtracted: [
+      { category: 'symptom' as const, text: 'Anhedonia e insomnio de conciliación (>90m)' },
+      { category: 'symptom' as const, text: 'Fatiga psicofísica vespertina' },
+      { category: 'timeline' as const, text: '4 semanas de evolución post-estresor laboral' },
+      { category: 'medication' as const, text: 'Antecedente de Sertralina 50mg suspendida' },
+      { category: 'mental_status' as const, text: 'Hipotimia, juicio conservado, sin ideación suicida' },
+    ],
+  },
+  transcriptSample: AmbientScribeEngine.getDefaultDemoTranscript(),
+};
+
 export default function ClinicafyWorkstation() {
   // Navigation
   const [activeTab, setActiveTab] = useState<'scribe' | 'receta' | 'erp' | 'iot' | 'ecommerce' | 'audit'>('scribe');
@@ -55,7 +118,7 @@ export default function ClinicafyWorkstation() {
   const [isRecording, setIsRecording] = useState(false);
   const [recordSeconds, setRecordSeconds] = useState(0);
   const [noteFormat, setNoteFormat] = useState<'SOAP' | 'DAP'>('SOAP');
-  const [scribeData, setScribeData] = useState(() => AmbientScribeEngine.processClinicalAudio(''));
+  const [scribeData, setScribeData] = useState(INITIAL_SCRIBE_DATA);
   const [selectedDiagnoses, setSelectedDiagnoses] = useState<MedicalDiagnosis[]>([
     CLINICAL_DIAGNOSTIC_CATALOG[0],
     CLINICAL_DIAGNOSTIC_CATALOG[1],
@@ -112,7 +175,7 @@ export default function ClinicafyWorkstation() {
   const [inventoryAlerts, setInventoryAlerts] = useState<string[]>([]);
 
   // 4. IoT Biometric State
-  const [biometrics, setBiometrics] = useState<BiometricTelemetry>(() => IoTGateway.generateSimulatedTelemetry(74));
+  const [biometrics, setBiometrics] = useState<BiometricTelemetry>(INITIAL_BIOMETRICS);
   const [isIotStreaming, setIsIotStreaming] = useState(true);
 
   // 5. Onboarding & E-commerce State
@@ -430,11 +493,11 @@ export default function ClinicafyWorkstation() {
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }} suppressHydrationWarning>
           <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Telemetría en Box:</span>
-          <span className="badge badge-success">FC: {biometrics.heartRateBpm} bpm</span>
-          <span className="badge badge-teal">SpO2: {biometrics.spo2Percent}%</span>
-          <span className="badge badge-indigo">Estrés: {biometrics.stressLevel.toUpperCase()}</span>
+          <span className="badge badge-success" suppressHydrationWarning>FC: {biometrics.heartRateBpm} bpm</span>
+          <span className="badge badge-teal" suppressHydrationWarning>SpO2: {biometrics.spo2Percent}%</span>
+          <span className="badge badge-indigo" suppressHydrationWarning>Estrés: {biometrics.stressLevel.toUpperCase()}</span>
         </div>
       </div>
 
@@ -1226,7 +1289,7 @@ export default function ClinicafyWorkstation() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.25rem', marginBottom: '1.5rem' }}>
             <div className="glass-card" style={{ textAlign: 'center', padding: '1.5rem 1rem' }}>
               <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.4rem' }}>FRECUENCIA CARDÍACA</div>
-              <div style={{ fontSize: '2.5rem', fontWeight: 800, color: '#38bdf8' }}>
+              <div style={{ fontSize: '2.5rem', fontWeight: 800, color: '#38bdf8' }} suppressHydrationWarning>
                 {biometrics.heartRateBpm}
               </div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>lpm (latidos/min)</div>
@@ -1234,7 +1297,7 @@ export default function ClinicafyWorkstation() {
 
             <div className="glass-card" style={{ textAlign: 'center', padding: '1.5rem 1rem' }}>
               <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.4rem' }}>VARIABILIDAD CARDÍACA (VFC)</div>
-              <div style={{ fontSize: '2.5rem', fontWeight: 800, color: '#818cf8' }}>
+              <div style={{ fontSize: '2.5rem', fontWeight: 800, color: '#818cf8' }} suppressHydrationWarning>
                 {biometrics.hrvMs}
               </div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>ms (indicador de estrés SNA)</div>
@@ -1242,7 +1305,7 @@ export default function ClinicafyWorkstation() {
 
             <div className="glass-card" style={{ textAlign: 'center', padding: '1.5rem 1rem' }}>
               <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.4rem' }}>PRESIÓN ARTERIAL</div>
-              <div style={{ fontSize: '2.5rem', fontWeight: 800, color: '#059669' }}>
+              <div style={{ fontSize: '2.5rem', fontWeight: 800, color: '#059669' }} suppressHydrationWarning>
                 {biometrics.bloodPressureSystolic}/{biometrics.bloodPressureDiastolic}
               </div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>mmHg (Normotensa)</div>
@@ -1250,7 +1313,7 @@ export default function ClinicafyWorkstation() {
 
             <div className="glass-card" style={{ textAlign: 'center', padding: '1.5rem 1rem' }}>
               <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.4rem' }}>SATURACIÓN DE OXÍGENO</div>
-              <div style={{ fontSize: '2.5rem', fontWeight: 800, color: '#f59e0b' }}>
+              <div style={{ fontSize: '2.5rem', fontWeight: 800, color: '#f59e0b' }} suppressHydrationWarning>
                 {biometrics.spo2Percent}%
               </div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>SpO2 Pulsoxímetro Box</div>
