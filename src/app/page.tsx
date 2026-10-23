@@ -29,7 +29,7 @@ import {
   Fingerprint
 } from 'lucide-react';
 import { MedicalDiagnosis, PrescriptionMedication, InventoryItem, BiometricTelemetry, AuditLogEntry } from '@/types';
-import { CLINICAL_DIAGNOSTIC_CATALOG, AmbientScribeEngine } from '@/services/ambient-scribe';
+import { CLINICAL_DIAGNOSTIC_CATALOG, AmbientScribeEngine, ScribeExtractionResult } from '@/services/ambient-scribe';
 import { PrescriptionEngine } from '@/services/prescription-engine';
 import { ImedEngine } from '@/services/imed-engine';
 import { IoTGateway } from '@/services/iot-gateway';
@@ -47,7 +47,7 @@ const INITIAL_BIOMETRICS: BiometricTelemetry = {
   stressLevel: 'low',
 };
 
-const INITIAL_SCRIBE_DATA = {
+const INITIAL_SCRIBE_DATA: ScribeExtractionResult = {
   soap: {
     subjective: `Paciente refiere cuadro de 4 semanas de evolución caracterizado por anhedonia persistente, fatiga psicofísica y dificultades para conciliar el sueño (latencia > 90 min). Menciona estresor laboral agudo en el último mes. Niega ideación suicida activa o síntomas psicóticos. Refiere antecedentes de tratamiento discontinuado con Sertralina en 2024.`,
     objective: `Paciente vigil, lúcido, orientado témporo-espacialmente. Afecto de resonancia disminuida, hipotímico con labilidad emocional moderada al relatar situación laboral. Pensamiento coherente, flujo normal sin bloqueos. No se aprecian alteraciones sensoperceptivas. Juicio de realidad conservado. Normotenso (120/75 mmHg), FC: 74 lpm regular.`,
@@ -118,7 +118,7 @@ export default function ClinicafyWorkstation() {
   const [isRecording, setIsRecording] = useState(false);
   const [recordSeconds, setRecordSeconds] = useState(0);
   const [noteFormat, setNoteFormat] = useState<'SOAP' | 'DAP'>('SOAP');
-  const [scribeData, setScribeData] = useState(INITIAL_SCRIBE_DATA);
+  const [scribeData, setScribeData] = useState<ScribeExtractionResult>(INITIAL_SCRIBE_DATA);
   const [selectedDiagnoses, setSelectedDiagnoses] = useState<MedicalDiagnosis[]>([
     CLINICAL_DIAGNOSTIC_CATALOG[0],
     CLINICAL_DIAGNOSTIC_CATALOG[1],
@@ -366,21 +366,30 @@ export default function ClinicafyWorkstation() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <div
             style={{
-              width: '44px',
-              height: '44px',
+              width: '46px',
+              height: '46px',
               borderRadius: '12px',
-              background: '#0f172a',
+              background: '#ffffff',
+              border: '1px solid var(--border-subtle)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.08)',
+              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.06)',
+              overflow: 'hidden',
+              padding: '2px',
             }}
           >
-            <Brain size={26} color="#ffffff" />
+            <img
+              src="/clinicafy-logo.png"
+              alt="Clinicafy Logo"
+              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+            />
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <h1 style={{ fontSize: '1.4rem', fontWeight: 800, letterSpacing: '-0.02em' }}>Clinicafy</h1>
+              <h1 style={{ fontSize: '1.45rem', fontWeight: 900, letterSpacing: '-0.03em', color: '#0f172a' }}>
+                Clinica<span style={{ color: '#059669' }}>fy</span>
+              </h1>
               <span className="badge badge-teal">SaaS Multi-Tenant</span>
               <span className="badge badge-indigo">FHIR R4</span>
             </div>

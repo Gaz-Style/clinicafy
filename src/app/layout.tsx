@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from 'next';
+﻿import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -15,6 +15,11 @@ export const metadata: Metadata = {
     'Ley 20.584',
   ],
   authors: [{ name: 'Clinicafy Cloud Architecture Team' }],
+  icons: {
+    icon: '/clinicafy-logo.png',
+    shortcut: '/clinicafy-logo.png',
+    apple: '/clinicafy-logo.png',
+  },
 };
 
 export const viewport: Viewport = {
