@@ -1,4 +1,4 @@
-﻿import type { Metadata, Viewport } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -16,9 +16,15 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Clinicafy Cloud Architecture Team' }],
   icons: {
-    icon: '/clinicafy-logo.png',
-    shortcut: '/clinicafy-logo.png',
-    apple: '/clinicafy-logo.png',
+    icon: [
+      { url: '/Isotipo-Clinicafy.webp', type: 'image/webp' },
+      { url: '/favicon.ico', sizes: '32x32' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+    ],
+    shortcut: '/Isotipo-Clinicafy.webp',
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
   },
 };
 
@@ -38,6 +44,8 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="icon" type="image/webp" href="/Isotipo-Clinicafy.webp" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body>{children}</body>
     </html>

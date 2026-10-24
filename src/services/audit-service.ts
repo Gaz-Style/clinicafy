@@ -1,11 +1,17 @@
+// ============================================================================
+// CLINICAFY — AUDIT SERVICE (híbrido: memoria + Supabase persistente)
+// Server-side: persiste en BD. Client-side: mantiene estado local.
+// ============================================================================
 import { AuditLogEntry } from '@/types';
 
 export class AuditService {
+  /** In-memory ledger for client-side display (non-persistent) */
   private static inMemoryLedger: AuditLogEntry[] = [];
 
   /**
-   * Registra una acción clínica o administrativa de forma inmutable.
-   * Conforme al Art. 12 y 13 de la Ley 20.584 (Derechos y Deberes de las Personas en Salud).
+   * Registra una acción clínica de forma local Y la persiste en Supabase
+   * via API route (para que funcione tanto en cliente como servidor).
+   * Conforme al Art. 12 y 13 de la Ley 20.584.
    */
   public static logAction(params: {
     tenantId: string;
@@ -25,17 +31,33 @@ export class AuditService {
       resourceType: params.resourceType,
       resourceId: params.resourceId,
       patientId: params.patientId,
-      clientIp: params.clientIp || '190.161.42.12',
+      clientIp: params.clientIp || 'client',
       metadata: params.metadata || {},
       timestamp: new Date().toISOString(),
     };
 
-    // Almacenar en ledger inmutable (en producción ejecuta INSERT en PostgreSQL audit_logs con trigger de inmutabilidad)
+    // Local ledger (for UI display)
     this.inMemoryLedger.unshift(entry);
+
+    // Fire-and-forget persist to DB via API route (works from browser)
+    if (typeof window !== 'undefined') {
+      fetch('/api/audit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(params),
+      }).catch(err => console.warn('[Audit] Persist failed:', err));
+    }
+
     return entry;
   }
 
-  public static getAuditTrail(tenantId: string, limit: number = 20): AuditLogEntry[] {
-    return this.inMemoryLedger.filter(entry => entry.tenantId === tenantId).slice(0, limit);
+  public static getAuditTrail(tenantId: string, limit = 20): AuditLogEntry[] {
+    return this.inMemoryLedger
+      .filter(e => e.tenantId === tenantId)
+      .slice(0, limit);
+  }
+
+  public static clearLocalLedger(): void {
+    this.inMemoryLedger = [];
   }
 }

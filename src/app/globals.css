@@ -320,3 +320,211 @@ input:focus, textarea:focus, select:focus {
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+/* ==========================================================================
+   MEDILINK-INSPIRED VISUAL ENHANCEMENTS (APPLE HIG + MERCENARIO EDITORIAL)
+   ========================================================================== */
+
+/* Botón Píldora con Arrow Reveal */
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.6rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  text-decoration: none;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.btn-pill-primary {
+  background: #0f172a;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-pill-primary:hover {
+  background: #1e293b;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.22);
+}
+
+.btn-pill-accent {
+  background: #0284c7;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25);
+}
+
+.btn-pill-accent:hover {
+  background: #0369a1;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.35);
+}
+
+.btn-pill-secondary {
+  background: #ffffff;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+}
+
+.btn-pill-secondary:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  transform: translateY(-1px);
+}
+
+/* Arrow reveal on hover */
+.reveal-arrow {
+  display: inline-flex;
+  align-items: center;
+  max-width: 0;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.btn-pill:hover .reveal-arrow {
+  max-width: 20px;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Spinner border animado (Estilo Medilink Demo CTA) */
+.glowing-badge-border {
+  position: relative;
+  border-radius: 9999px;
+  padding: 1.5px;
+  background: linear-gradient(90deg, #0284c7, #38bdf8, #059669, #0284c7);
+  background-size: 200% auto;
+  animation: shimmerBorder 3s linear infinite;
+  display: inline-block;
+}
+
+@keyframes shimmerBorder {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Bento Grid System */
+.bento-grid-container {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.5rem;
+}
+
+.bento-col-12 { grid-column: span 12; }
+.bento-col-8 { grid-column: span 8; }
+.bento-col-7 { grid-column: span 7; }
+.bento-col-6 { grid-column: span 6; }
+.bento-col-5 { grid-column: span 5; }
+.bento-col-4 { grid-column: span 4; }
+
+@media (max-width: 960px) {
+  .bento-grid-container {
+    grid-template-columns: 1fr;
+  }
+  .bento-col-12,
+  .bento-col-8,
+  .bento-col-7,
+  .bento-col-6,
+  .bento-col-5,
+  .bento-col-4 {
+    grid-column: span 1 !important;
+  }
+}
+
+.bento-card-interactive {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 1.85rem;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  justifyContent: space-between;
+  overflow: hidden;
+  position: relative;
+}
+
+.bento-card-interactive:hover {
+  border-color: #cbd5e1;
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
+}
+
+/* Stats Banner High Contrast */
+.stats-banner-dark {
+  background: #0f172a;
+  border-radius: 24px;
+  color: #ffffff;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.stat-metric-number {
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  background: linear-gradient(180deg, #ffffff 30%, #cbd5e1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ==========================================================================
+   MOBILE RESPONSIVENESS & TOUCH OPTIMIZATIONS (APPLE HIG)
+   ========================================================================== */
+
+@media (max-width: 820px) {
+  .hidden-mobile {
+    display: none !important;
+  }
+  .visible-mobile {
+    display: flex !important;
+  }
+  .mobile-stack {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .mobile-full-width {
+    width: 100% !important;
+  }
+  .mobile-text-center {
+    text-align: center !important;
+  }
+  .mobile-p-small {
+    padding: 1.25rem 1rem !important;
+  }
+  .mobile-hide-badges {
+    display: none !important;
+  }
+}
+
+@media (min-width: 821px) {
+  .visible-mobile {
+    display: none !important;
+  }
+}
+
+/* Touch-friendly defaults */
+@media (max-width: 640px) {
+  .btn-pill {
+    padding: 0.85rem 1.4rem;
+    font-size: 0.9rem;
+    width: 100%;
+  }
+  .bento-card-interactive {
+    padding: 1.35rem 1.15rem !important;
+    border-radius: 18px !important;
+  }
+  .stat-metric-number {
+    font-size: 2rem !important;
+  }
+}

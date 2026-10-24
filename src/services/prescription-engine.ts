@@ -44,7 +44,7 @@ export class PrescriptionEngine {
     const isRetained = params.medications.some(m => m.isControlled);
     const codeSuffix = Math.floor(100000 + Math.random() * 900000);
     const prescriptionCode = `RX-${new Date().getFullYear()}-${codeSuffix}`;
-    const token = `fea_${Buffer.from(`${prescriptionCode}_${params.patientRut}_${Date.now()}`).toString('base64url').slice(0, 32)}`;
+    const token = `fea_${Buffer.from(`${prescriptionCode}_${params.patientRut}_${Date.now()}`).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '').slice(0, 32)}`;
     
     const validUntilDate = new Date();
     validUntilDate.setDate(validUntilDate.getDate() + (params.daysValid || (isRetained ? 30 : 60)));
